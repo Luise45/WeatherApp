@@ -3,6 +3,17 @@ import { useEffect, useState } from "react";
 export default function WeatherApp() {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
+  
+  navigator.geolocation.getCurrentPosition((pos) => {
+    console.log(pos.coords.latitude, pos.coords.longitude);
+  });
+  const weatherMap = {
+    0: "☀️",
+    1: "🌤️",
+    2: "⛅",
+    3: "☁️",
+    61: "🌧️",
+  };
 
   // Berlin default coords
   const lat = 52.52;
@@ -23,16 +34,16 @@ export default function WeatherApp() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Weather App</h1>
+      <h1 className="text-2xl font-bold mb-4">Weather</h1>
 
-      {/* Current Weather */}
+
       <div className="mb-6 p-4 rounded-2xl shadow">
         <h2 className="text-xl font-semibold">Current Weather</h2>
         <p>Temperature: {weather.current_weather.temperature}°C</p>
         <p>Wind Speed: {weather.current_weather.windspeed} km/h</p>
       </div>
 
-      {/* Hourly Forecast */}
+
       <div className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Hourly Forecast</h2>
         <div className="flex overflow-x-auto gap-4">
@@ -47,7 +58,6 @@ export default function WeatherApp() {
         </div>
       </div>
 
-      {/* 5-Day Forecast */}
       <div>
         <h2 className="text-xl font-semibold mb-2">5-Day Forecast</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -67,5 +77,3 @@ export default function WeatherApp() {
     </div>
   );
 }
-
-
