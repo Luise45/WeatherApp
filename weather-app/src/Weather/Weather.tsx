@@ -1,22 +1,24 @@
+
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 const weatherIcons = {
-    0: "☀️",
-    1: "🌤️",
-    2: "⛅",
-    3: "☁️",
-    45: "🌫️",
-    48: "🌫️",
-    61: "🌧️",
-    63: "🌧️",
-    65: "🌧️",
-    71: "❄️",
-  };
+  0: "☀️",
+  1: "🌤️",
+  2: "⛅",
+  3: "☁️",
+  45: "🌫️",
+  48: "🌫️",
+  61: "🌧️",
+  63: "🌧️",
+  65: "🌧️",
+  71: "❄️",
+};
 export default function WeatherPage() {
     const [weather, setWeather] = useState(null);
     const navigate = useNavigate();
-
+  
     const query = new URLSearchParams(window.location.search);
     const city = query.get("city");
   
@@ -59,7 +61,7 @@ export default function WeatherPage() {
   
           <h1 className="text-3xl font-bold mb-6">Weather in {city}</h1>
   
-    
+         
           <div className="mb-6 p-6 rounded-3xl bg-white/10 backdrop-blur shadow-xl">
             <div className="text-5xl mb-2">
               {weatherIcons[weather.current_weather.weathercode] || "🌡️"}
@@ -69,7 +71,7 @@ export default function WeatherPage() {
             </p>
           </div>
   
-
+       
           <div className="mb-6">
             <h2 className="text-xl mb-3">Hourly Forecast</h2>
             <div className="flex gap-4 overflow-x-auto pb-2">
@@ -87,7 +89,7 @@ export default function WeatherPage() {
             </div>
           </div>
   
-          {/* Daily */}
+  
           <div>
             <h2 className="text-xl mb-3">5-Day Forecast</h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -114,7 +116,4 @@ export default function WeatherPage() {
       </div>
     );
   }
-  
-  
-  
   

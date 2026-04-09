@@ -1,6 +1,5 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 
 export default function Home() {
@@ -36,5 +35,3 @@ export default function Home() {
     </div>
   );
 }
-
-
