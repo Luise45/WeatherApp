@@ -1,4 +1,88 @@
 
+.weather-header {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: aliceblue;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: aliceblue;
+}
+
+.header-logo span {
+  font-size: 1.5rem;
+
+}
+
+.header-logo h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: aliceblue;
+}
+
+.header-nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: aliceblue;
+}
+
+.nav-button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  transition: background 0.3s;
+}
+
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.city-name {
+  font-weight: 500;
+}
+
+
+.weather-footer {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  text-align: center;
+  margin-top: auto;
+}
+
+.weather-footer p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: aliceblue;
+}
+
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content-layer {
+  flex: 1;
+}
 * {
   margin: 0;
   padding: 0;
@@ -6,24 +90,29 @@
   font-family: system-ui, sans-serif;
 }
 
-body {
-  min-height: 100vh;
-  background: linear-gradient(
-      rgba(20, 20, 40, 0.6),
-      rgba(20, 20, 40, 0.9)
-    ),
-    url("https://er4g69dhr7o.exactdn.com/wp-content/uploads/2025/07/Sonnenuntergang-in-Berlin-fotografieren.jpg?strip=all&lossy=1&w=2560&ssl=1");
-  background-size: cover;
-  background-position: center;
-  color: white;
-  padding: 20px;
-}
-
-
 .page {
-  max-width: 900px;
-  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
 }
+
+.background-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+   background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.content-layer {
+ 
+  position: relative;
+  z-index: 1;
+}
+
 
 
 .back-btn {
@@ -46,6 +135,7 @@ body {
 h1 {
   font-size: 32px;
   margin-bottom: 20px;
+  color: aliceblue;
 }
 
 
@@ -68,9 +158,11 @@ h1 {
 .temp {
   font-size: 34px;
   font-weight: bold;
+  color: aliceblue;
 }
 .wind {
   font-size: 20px;
+  color: aliceblue;
  
 }
 
@@ -80,6 +172,7 @@ h1 {
 
 h2 {
   margin-bottom: 10px;
+  color: aliceblue;
 }
 
 .hourly {
@@ -87,6 +180,7 @@ h2 {
   display: flex;
   gap: 12px;
   overflow-x: auto;
+  color: aliceblue;
 }
 
 .hour-card {
@@ -97,6 +191,7 @@ h2 {
   background: rgba(255, 255, 255, 0.1);
   text-align: center;
   backdrop-filter: blur(10px);
+  color: aliceblue;
 }
 .hour-card.active {
   background: rgba(255,255,255,0.25);
@@ -110,6 +205,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 15px;
+  color: aliceblue;
 }
 
 .day-card {
@@ -118,6 +214,7 @@ h2 {
   text-align: center;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
+  color: aliceblue;
 }
 
 

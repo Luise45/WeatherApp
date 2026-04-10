@@ -6,7 +6,7 @@ body {
         rgba(20, 20, 40, 0.5),
         rgba(20, 20, 40, 0.8)
       ),
-      url("https://er4g69dhr7o.exactdn.com/wp-content/uploads/2025/07/Sonnenuntergang-in-Berlin-fotografieren.jpg?strip=all&lossy=1&w=2560&ssl=1");
+      url("https://www.freeworldmaps.net/printable/printable-world-map-hd.jpg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -26,15 +26,15 @@ body {
     background: rgba(255,255,255,0.1);
     padding: 30px;
     border-radius: 20px;
-    backdrop-filter: blur(10px);
-    color: white;
+    backdrop-filter: blur(15px);
+    color: rgb(9, 9, 9);
   }
   
   .home-container input,
   .home-container button {
     display: block;
     width: 100%;
-    margin: 10px 0;
+    margin: 15px 0;
     padding: 10px;
     border-radius: 10px;
     border: none;
