@@ -86,8 +86,10 @@ export default function WeatherPage() {
     <div className="content-layer">
   
   
-   <div className=".weather-header">
-    <div className=".header-logo">
+   <div className="weather-header">
+    <div className="header-logo ">
+    <div className="header-logo h2">
+    <div className="header-logo span">
     <header style={{
       position: "relative",
       zIndex: 1,
@@ -100,10 +102,13 @@ export default function WeatherPage() {
       flexWrap: "wrap",
       gap: "1rem"
     }}>
-      <div className="header-logo h2"></div>
+     
     </header>
     </div>
+    </div>
+    </div>
  </div>
+ 
       <div className="max-w-5xl mx-auto p-4">
         <button
           onClick={() => navigate("/")}

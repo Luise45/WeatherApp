@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Home.css";
+import Recent from "./Recent";
+
 
 export default function Home() {
   const [city, setCity] = useState("");
@@ -8,9 +10,16 @@ export default function Home() {
 
   const handleSearch = () => {
     if (!city) return;
+  
+    let searches = JSON.parse(localStorage.getItem("recentCities")) || [];
+  
+    searches = searches.filter((c) => c !== city);
+    searches.unshift(city);
+    searches = searches.slice(0, 5);
+    localStorage.setItem("recentCities", JSON.stringify(searches));
+  
     navigate(`/weather?city=${city}`);
   };
- 
    
   return (
     <div className="home-container">
@@ -31,6 +40,7 @@ export default function Home() {
             Search
           </button>
         </div>
+        <Recent/>
       </div>
 
   );

@@ -6,7 +6,7 @@ body {
         rgba(20, 20, 40, 0.5),
         rgba(20, 20, 40, 0.8)
       ),
-      url("https://www.freeworldmaps.net/printable/printable-world-map-hd.jpg");
+      url("https://research.reading.ac.uk/research-blog/wp-content/uploads/sites/72/2023/02/AdobeStock_171500112-1024x787.jpeg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -38,4 +38,35 @@ body {
     padding: 10px;
     border-radius: 10px;
     border: none;
+  }
+
+  .recent-container {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .recent-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+  
+  .chip-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .chip {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: 0.2s;
+  }
+  
+  .chip:hover {
+    background: rgba(255, 255, 255, 0.4);
   }
