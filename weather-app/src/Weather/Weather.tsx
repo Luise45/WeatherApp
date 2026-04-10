@@ -1,6 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import "./Weather.css";
 
@@ -20,10 +21,12 @@ const weatherIcons = {
 export default function WeatherPage() {
     const [weather, setWeather] = useState(null);
     const navigate = useNavigate();
+
+
+const [searchParams] = useSearchParams();
+const city = searchParams.get("city");
   
-    const query = new URLSearchParams(window.location.search);
-    const city = query.get("city");
-  
+ 
     useEffect(() => {
       if (!city) return;
   
@@ -72,10 +75,13 @@ export default function WeatherPage() {
             <p className="temp">
               {weather.current_weather.temperature}°C
             </p>
+            <p className="wind">
+            {weather.current_weather.windspeed} km/h wind
+            </p>
           </div>
   
-       
-          <div className="hourly">
+       <div>
+        <div className="section"></div>
             <h2 className="h2">Hourly Forecast</h2>
             <div className="hourly">
               {weather.hourly.time.slice(0, 24).map((t, i) => (
@@ -87,12 +93,14 @@ export default function WeatherPage() {
                   <p className="text-lg">
                     {weather.hourly.temperature_2m[i]}°
                   </p>
+        
                 </div>
               ))}
-            </div>
+
+        
           </div>
-  
-  
+          </div>
+          <div className="section"></div>
           <div>
             <h2 className="h2">5-Day Forecast</h2>
             <div className="daily">

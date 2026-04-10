@@ -1,0 +1,132 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+      rgba(20, 20, 40, 0.6),
+      rgba(20, 20, 40, 0.9)
+    ),
+    url("https://er4g69dhr7o.exactdn.com/wp-content/uploads/2025/07/Sonnenuntergang-in-Berlin-fotografieren.jpg?strip=all&lossy=1&w=2560&ssl=1");
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 20px;
+}
+
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+.back-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+
+.icon {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.temp {
+  font-size: 34px;
+  font-weight: bold;
+}
+.wind {
+  font-size: 20px;
+ 
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+.hourly {
+  scroll-snap-type: x mandatory;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+}
+
+.hour-card {
+  scroll-snap-align: start;
+  min-width: 80px;
+  padding: 15px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+.hour-card.active {
+  background: rgba(255,255,255,0.25);
+  border: 1px solid white;
+}
+.card, .hour-card, .day-card {
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.daily {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.day-card {
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 24px;
+  }
+
+  .temp {
+    font-size: 28px;
+  }
+}
