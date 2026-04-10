@@ -2,6 +2,8 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+import "./Weather.css";
+
 
 const weatherIcons = {
   0: "☀️",
@@ -50,35 +52,36 @@ export default function WeatherPage() {
       );
   
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-400 to-indigo-700 text-white p-6">
+      
+      <div className="page">
         <div className="max-w-5xl mx-auto">
           <button
             onClick={() => navigate("/")}
-            className="mb-4 bg-white/20 px-4 py-2 rounded-xl backdrop-blur hover:bg-white/30"
-          >
+            className="back-btn " 
+           >
             ← Back
           </button>
   
-          <h1 className="text-3xl font-bold mb-6">Weather in {city}</h1>
+          <h1 className="h1">Weather in {city}</h1>
   
          
-          <div className="mb-6 p-6 rounded-3xl bg-white/10 backdrop-blur shadow-xl">
-            <div className="text-5xl mb-2">
+          <div className="card">
+            <div className="icon">
               {weatherIcons[weather.current_weather.weathercode] || "🌡️"}
             </div>
-            <p className="text-2xl">
+            <p className="temp">
               {weather.current_weather.temperature}°C
             </p>
           </div>
   
        
-          <div className="mb-6">
-            <h2 className="text-xl mb-3">Hourly Forecast</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2">
+          <div className="hourly">
+            <h2 className="h2">Hourly Forecast</h2>
+            <div className="hourly">
               {weather.hourly.time.slice(0, 24).map((t, i) => (
                 <div
                   key={i}
-                  className="p-4 rounded-2xl bg-white/10 backdrop-blur shadow min-w-[90px] text-center"
+                  className="hour-card"
                 >
                   <p>{new Date(t).getHours()}:00</p>
                   <p className="text-lg">
@@ -91,12 +94,12 @@ export default function WeatherPage() {
   
   
           <div>
-            <h2 className="text-xl mb-3">5-Day Forecast</h2>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <h2 className="h2">5-Day Forecast</h2>
+            <div className="daily">
               {weather.daily.time.slice(0, 5).map((d, i) => (
                 <div
                   key={i}
-                  className="p-4 rounded-2xl bg-white/10 backdrop-blur shadow text-center"
+                  className="day-card"
                 >
                   <p className="font-medium">
                     {new Date(d).toLocaleDateString()}

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import "./Home.css";
 
 export default function Home() {
   const [city, setCity] = useState("");
@@ -10,11 +10,11 @@ export default function Home() {
     if (!city) return;
     navigate(`/weather?city=${city}`);
   };
-
+ 
+   
   return (
-    <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-700 text-white">
-      <div className="backdrop-blur-md bg-white/10 p-10 rounded-3xl shadow-2xl text-center">
-        <h1 className="text-4xl font-bold mb-6">🌦️ Weather App</h1>
+    <div className="home-container">
+        <h1> Weather App</h1>
 
         <div className="flex gap-2">
           <input
@@ -32,6 +32,7 @@ export default function Home() {
           </button>
         </div>
       </div>
-    </div>
+
   );
+  
 }
