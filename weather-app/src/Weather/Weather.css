@@ -1,68 +1,24 @@
-
 .weather-header {
   position: relative;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(104, 129, 178, 0.75);
   backdrop-filter: blur(10px);
-  padding: 1rem 2rem;
   display: flex;
-  justify-content: space-between;
+
   align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  color: aliceblue;
-}
-
-.header-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: aliceblue;
-}
-
-.header-logo span {
-  font-size: 1.5rem;
-  color: aliceblue;
-}
-
-.header-logo h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: aliceblue;
-}
-
-.header-nav {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  color: aliceblue;
-}
-
-.nav-button {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-  transition: background 0.3s;
-}
-
-.nav-button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  color: #f0f4f8;
 }
 
 .city-name {
+  color: #f0f4f8;
   font-weight: 500;
 }
-
 
 .weather-footer {
   position: relative;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  padding: 1rem;
+  background-color:  rgba(104, 129, 178, 0.75);
+  padding:0.3%;
   text-align: center;
   margin-top: auto;
 }
@@ -70,9 +26,8 @@
 .weather-footer p {
   margin: 0;
   font-size: 0.875rem;
-  color: aliceblue;
+  color: #f0f4f8;
 }
-
 
 .page {
   display: flex;
@@ -83,11 +38,12 @@
 .content-layer {
   flex: 1;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .page {
@@ -102,128 +58,221 @@
   left: 0;
   right: 0;
   bottom: 0;
-   background-size: cover;
+  background-size: cover;
   background-position: center;
   z-index: 0;
 }
 
-.content-layer {
- 
-  position: relative;
-  z-index: 1;
+.background-layer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.15);
+  pointer-events: none;
 }
 
+.content-layer {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  width: 100%;
+}
 
+.weather-main {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
 
 .back-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(90, 129, 221, 0.4);
   border: none;
-  padding: 10px 16px;
-  border-radius: 10px;
+  padding: 15px 25px;
+  border-radius: 40px;
   color: white;
   cursor: pointer;
-  margin-bottom: 20px;
-  backdrop-filter: blur(10px);
-  transition: 0.2s;
+  margin-bottom: 24px;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.6);
+  transform: translateY(-1px);
 }
 
-
 h1 {
-  font-size: 32px;
-  margin-bottom: 20px;
-  color: aliceblue;
+  font-size: 2rem;
+  margin-bottom: 24px;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
 }
 
 
 .card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  padding: 30px;
+  background: rgba(104, 129, 178, 0.75);
+  backdrop-filter: blur(16px);
+  border-radius: 28px;
+  padding: 32px 24px;
   text-align: center;
-  margin-bottom: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  margin-bottom: 28px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+}
 
 .icon {
-  font-size: 50px;
-  margin-bottom: 10px;
+  font-size: 56px;
+  margin-bottom: 12px;
 }
 
 .temp {
-  font-size: 34px;
+  font-size: 42px;
   font-weight: bold;
-  color: aliceblue;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
+
 .wind {
-  font-size: 20px;
-  color: aliceblue;
- 
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 8px;
 }
 
 .section {
-  margin-bottom: 30px;
+  margin-bottom: 32px;
 }
 
 h2 {
-  margin-bottom: 10px;
-  color: aliceblue;
+  margin-bottom: 16px;
+  color: #ffffff;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
 .hourly {
   scroll-snap-type: x mandatory;
   display: flex;
-  gap: 12px;
+  gap: 14px;
   overflow-x: auto;
-  color: aliceblue;
+  padding-bottom: 17px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.4) rgba(0, 0, 0, 0.2);
+}
+
+.hourly::-webkit-scrollbar {
+  height: 4px;
+}
+
+.hourly::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.hourly::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
 }
 
 .hour-card {
   scroll-snap-align: start;
-  min-width: 80px;
-  padding: 15px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.1);
+  min-width: 85px;
+  padding: 14px 10px;
+  border-radius: 20px;
+  background: rgba(172, 192, 234, 0.7);
   text-align: center;
   backdrop-filter: blur(10px);
-  color: aliceblue;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
 }
+
 .hour-card.active {
-  background: rgba(255,255,255,0.25);
-  border: 1px solid white;
+  background: rgba(50, 60, 80, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-.card, .hour-card, .day-card {
-  border: 1px solid rgba(255,255,255,0.2);
+
+.card,
+.hour-card,
+.day-card {
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .daily {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-  color: aliceblue;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 16px;
 }
 
 .day-card {
-  padding: 15px;
-  border-radius: 15px;
+  padding: 16px 10px;
+  border-radius: 20px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(172, 192, 234, 0.7);
   backdrop-filter: blur(10px);
-  color: aliceblue;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.day-card:hover {
+  background: rgba(115, 138, 187, 0.8);
+  transform: translateY(-3px);
 }
 
 
-@media (max-width: 600px) {
-  h1 {
-    font-size: 24px;
+@media (max-width: 768px) {
+  .content-layer {
+    padding: 1.25rem 1rem;
   }
-
+  
+  .weather-main {
+    max-width: 100%;
+  }
+  
+  .card {
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+  
   .temp {
-    font-size: 28px;
+    font-size: 34px;
+  }
+  
+  .icon {
+    font-size: 46px;
+  }
+  
+  h1 {
+    font-size: 1.65rem;
+    margin-bottom: 18px;
+  }
+  
+  .daily {
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+  }
+  
+  .hour-card {
+    min-width: 72px;
+    padding: 10px 8px;
   }
 }

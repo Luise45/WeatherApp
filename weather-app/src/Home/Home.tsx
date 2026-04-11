@@ -7,6 +7,7 @@ import Recent from "./Recent";
 export default function Home() {
   const [city, setCity] = useState("");
   const navigate = useNavigate();
+  
 
   const handleSearch = () => {
     if (!city) return;

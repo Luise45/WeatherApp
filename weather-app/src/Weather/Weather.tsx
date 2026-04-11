@@ -80,16 +80,15 @@ export default function WeatherPage() {
     backgroundAttachment: "fixed",
   };
 
+
   return (
+ 
     <div className="page" style={backgroundStyle}>
    <div className="background-layer" style={backgroundStyle}>
-    <div className="content-layer">
   
   
    <div className="weather-header">
-    <div className="header-logo ">
-    <div className="header-logo h2">
-    <div className="header-logo span">
+ <div className="city-name">
     <header style={{
       position: "relative",
       zIndex: 1,
@@ -102,13 +101,6 @@ export default function WeatherPage() {
       flexWrap: "wrap",
       gap: "1rem"
     }}>
-     
-    </header>
-    </div>
-    </div>
-    </div>
- </div>
- 
       <div className="max-w-5xl mx-auto p-4">
         <button
           onClick={() => navigate("/")}
@@ -116,9 +108,18 @@ export default function WeatherPage() {
         >
           ← Back
         </button>
-
+        </div>
+        
+    </header>
+    </div>
+    </div>
+   
+ 
+     
+        <div className="content-layer">
+        <div className="weather-main">
         <h1 className="h1">Weather in {city}</h1>
-
+        <div className="content-layer">
         <div className="card">
           <div className="icon">
             {weatherIcons[weather.current_weather.weathercode] || "🌡️"}
@@ -169,6 +170,7 @@ export default function WeatherPage() {
       </div>
     </div>
     </div>
+    </div>
 
    <div className="weather-footer">
         <footer style={{
@@ -190,6 +192,7 @@ export default function WeatherPage() {
         </div>
       </div>
 
-    
+
+
   );
 }
