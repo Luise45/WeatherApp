@@ -24,7 +24,7 @@ export default function Home() {
    
   return (
     <div className="home-container">
-        <h1> Weather App</h1>
+        <h1> Weather Forcast</h1>
 
         <div className="flex gap-2">
           <input

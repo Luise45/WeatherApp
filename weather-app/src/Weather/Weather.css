@@ -90,7 +90,8 @@
 }
 
 .back-btn {
-  background: rgba(90, 129, 221, 0.4);
+  font-size: 0.8rem;
+  background: rgba(19, 77, 213, 0.4);
   border: none;
   padding: 15px 25px;
   border-radius: 40px;

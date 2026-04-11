@@ -92,9 +92,9 @@ export default function WeatherPage() {
     <header style={{
       position: "relative",
       zIndex: 1,
-      backgroundColor: "rgba(0,0,0,0.3)",
+
       backdropFilter: "blur(10px)",
-      padding: "1rem 2rem",
+      padding: "0.6rem 2rem",
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
@@ -130,6 +130,10 @@ export default function WeatherPage() {
           <p className="wind">
             {weather.current_weather.windspeed} km/h wind
           </p>
+          <p className="rain">
+            {weather.current_weather.percipitation} 
+          </p>
+          
         </div>
 
         <div>
@@ -173,22 +177,23 @@ export default function WeatherPage() {
     </div>
 
    <div className="weather-footer">
+   <div className="weather-footer p">
         <footer style={{
           position: "relative",
           zIndex: 1,
-          backgroundColor: "rgba(0,0,0,0.3)",
+  
           backdropFilter: "blur(10px)",
           padding: "1rem",
           textAlign: "center",
           marginTop: "auto"
         }}>
-          <div className="weather-footer p">
+
           <p style={{ margin: 0, fontSize: "0.875rem" }}>
             © {new Date().getFullYear()} Weather App | Data from Open-Meteo
           </p>
-          </div>
+
         </footer>
-        
+        </div>
         </div>
       </div>
 
