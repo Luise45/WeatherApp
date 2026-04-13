@@ -23,6 +23,7 @@ const weatherBackgrounds = {
   fog: "url('https://images.unsplash.com/photo-1487621167305-5d248087c724?w=1920')",
 };
 
+
 function getWeatherType(code) {
   if ([0].includes(code)) return "clear";
   if ([1, 2, 3].includes(code)) return "cloudy";
@@ -37,7 +38,8 @@ export default function WeatherPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const city = searchParams.get("city");
-
+  const [viewMode, setViewMode] = useState("temperature");
+  
   useEffect(() => {
     if (!city) return;
 
@@ -51,7 +53,7 @@ export default function WeatherPage() {
         }
 
         return fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=temperature_2m,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&current_weather=true&timezone=auto`
+          `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=temperature_2m,precipitation,windspeed_10m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,weathercode&current_weather=true&timezone=auto`
         );
       })
       .then((res) => res.json())
@@ -118,6 +120,23 @@ export default function WeatherPage() {
      
         <div className="content-layer">
         <div className="weather-main">
+        <div className="toggle">
+  <button
+    className={viewMode === "temperature" ? "active" : ""}
+    onClick={() => setViewMode("temperature")}
+  >
+    Temperature
+  </button>
+
+  <button
+    className={viewMode === "rainwind" ? "active" : ""}
+    onClick={() => setViewMode("rainwind")}
+  >
+    Rain & Wind
+  </button>
+</div>
+
+
         <h1 className="h1">Weather in {city}</h1>
         <div className="content-layer">
         <div className="card">
@@ -131,45 +150,59 @@ export default function WeatherPage() {
             {weather.current_weather.windspeed} km/h wind
           </p>
           <p className="rain">
-            {weather.current_weather.percipitation} 
-          </p>
+  {weather.hourly.precipitation[0]} mm rain
+</p>
           
         </div>
 
-        <div>
-          <div className="section"></div>
-          <h2 className="h2">Hourly Forecast</h2>
-          <div className="hourly">
-            {weather.hourly.time.slice(0, 24).map((t, i) => (
-              <div key={i} className="hour-card">
-                <p>{new Date(t).getHours()}:00</p>
-                <p className="text-lg">
-                  {weather.hourly.temperature_2m[i]}°
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <div className="hourly">
+  {weather.hourly.time.slice(0, 24).map((t, i) => (
+    <div key={i} className="hour-card">
+      <p>{new Date(t).getHours()}:00</p>
+
+      {viewMode === "temperature" ? (
+        <p className="text-lg">
+          {weather.hourly.temperature_2m[i]}°
+        </p>
+      ) : (
+        <>
+          <p>{weather.hourly.precipitation[i]} mm</p>
+          <p>{weather.hourly.windspeed_10m[i]} km/h</p>
+        </>
+      )}
+    </div>
+  ))}
+</div>
 
         <div className="section"></div>
         <div>
           <h2 className="h2">5-Day Forecast</h2>
+
           <div className="daily">
-            {weather.daily.time.slice(0, 5).map((d, i) => (
-              <div key={i} className="day-card">
-                <p className="font-medium">
-                  {new Date(d).toLocaleDateString()}
-                </p>
-                <div className="text-2xl my-2">
-                  {weatherIcons[weather.daily.weathercode[i]] || "🌤️"}
-                </div>
-                <p>
-                  {weather.daily.temperature_2m_max[i]}° /{" "}
-                  {weather.daily.temperature_2m_min[i]}°
-                </p>
-              </div>
-            ))}
-          </div>
+  {weather.daily.time.slice(0, 5).map((d, i) => (
+    <div key={i} className="day-card">
+      <p>{new Date(d).toLocaleDateString()}</p>
+
+      <div className="text-2xl my-2">
+        {weatherIcons[weather.daily.weathercode[i]] || "🌤️"}
+      </div>
+
+      {viewMode === "temperature" ? (
+        <p>
+          {weather.daily.temperature_2m_max[i]}° /{" "}
+          {weather.daily.temperature_2m_min[i]}°
+        </p>
+      ) : (
+        <>
+          <p>{weather.daily.precipitation_sum[i]} mm</p>
+          <p>{weather.daily.windspeed_10m_max[i]} km/h</p>
+        </>
+      )}
+    </div>
+  ))}
+</div>
+
+
         </div>
       </div>
     </div>
