@@ -17,6 +17,7 @@
 .weather-footer {
   position: relative;
   z-index: 1;
+  backdrop-filter: blur(10px);
   background-color:  rgba(104, 129, 178, 0.75);
   padding:0.3%;
   text-align: center;

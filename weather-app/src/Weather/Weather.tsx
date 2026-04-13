@@ -182,8 +182,8 @@ export default function WeatherPage() {
           position: "relative",
           zIndex: 1,
   
-          backdropFilter: "blur(10px)",
-          padding: "1rem",
+  
+          padding: "0.7rem",
           textAlign: "center",
           marginTop: "auto"
         }}>
