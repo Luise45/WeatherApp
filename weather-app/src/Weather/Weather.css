@@ -1,5 +1,35 @@
 
+.toggle {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
 
+.toggle button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  background: rgba(19, 77, 213, 0.4);
+  border: none;
+  padding: 15px 25px;
+  border-radius: 40px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 24px;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle .active {
+  background: rgba(104, 129, 178, 0.75);
+  color: white;
+}
 .weather-header {
   position: relative;
   z-index: 1;
