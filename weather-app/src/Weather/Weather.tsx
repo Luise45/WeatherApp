@@ -39,7 +39,8 @@ export default function WeatherPage() {
   const [searchParams] = useSearchParams();
   const city = searchParams.get("city");
   const [viewMode, setViewMode] = useState("temperature");
-  
+
+  const [marine, setMarine] = useState(null);
   useEffect(() => {
     if (!city) return;
 
@@ -51,14 +52,22 @@ export default function WeatherPage() {
           alert("City not found");
           return;
         }
+ 
+  fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=temperature_2m,precipitation,windspeed_10m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,weathercode&current_weather=true&timezone=auto`
+  )
+    .then((res) => res.json())
+    .then(setWeather);
 
-        return fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=temperature_2m,precipitation,windspeed_10m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,weathercode&current_weather=true&timezone=auto`
-        );
-      })
-      .then((res) => res.json())
-      .then((data) => setWeather(data));
-  }, [city]);
+
+  fetch(
+    `https://marine-api.open-meteo.com/v1/marine?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature`
+  )
+    .then((res) => res.json())
+    .then(setMarine);
+});
+  
+    }, [city]);
 
   if (!weather) {
     return (
@@ -117,7 +126,6 @@ export default function WeatherPage() {
     </div>
    
  
-     
         <div className="content-layer">
         <div className="weather-main">
         <div className="toggle">
@@ -134,6 +142,13 @@ export default function WeatherPage() {
   >
     Rain & Wind
   </button>
+
+  <button
+  className={viewMode === "marine" ? "active" : ""}
+  onClick={() => setViewMode("marine")}
+>
+  Marine 
+</button>
 </div>
 
 
@@ -143,15 +158,36 @@ export default function WeatherPage() {
           <div className="icon">
             {weatherIcons[weather.current_weather.weathercode] || "🌡️"}
           </div>
-          <p className="temp">
-            {weather.current_weather.temperature}°C
-          </p>
-          <p className="wind">
-            {weather.current_weather.windspeed} km/h wind
-          </p>
-          <p className="rain">
-  {weather.hourly.precipitation[0]} mm rain
-</p>
+        
+
+
+{viewMode === "marine" ? (
+  <>
+    <p className="temp">
+      🌊 {marine.hourly.wave_height[0]} m waves
+    </p>
+    <p className="wind">
+      🧭 {marine.hourly.wave_direction[0]}°
+    </p>
+    <p className="rain">
+      🌡️ {marine.hourly.sea_surface_temperature[0]}°C water
+    </p>
+  </>
+) : (
+  <>
+    <p className="temp">
+      {weather.current_weather.temperature}°C
+    </p>
+    <p className="wind">
+      {weather.current_weather.windspeed} km/h wind
+    </p>
+    <p className="rain">
+      {weather.hourly.precipitation[0]} mm rain
+    </p>
+  </>
+)}
+
+
           
         </div>
 
@@ -160,16 +196,19 @@ export default function WeatherPage() {
     <div key={i} className="hour-card">
       <p>{new Date(t).getHours()}:00</p>
 
-      {viewMode === "temperature" ? (
-        <p className="text-lg">
-          {weather.hourly.temperature_2m[i]}°
-        </p>
-      ) : (
-        <>
-          <p>{weather.hourly.precipitation[i]} mm</p>
-          <p>{weather.hourly.windspeed_10m[i]} km/h</p>
-        </>
-      )}
+      {viewMode === "marine" ? (
+  <>
+    <p>🌊 {marine.hourly.wave_height[i]} m</p>
+    <p>🌡️ {marine.hourly.sea_surface_temperature[i]}°</p>
+  </>
+) : viewMode === "temperature" ? (
+  <p>{weather.hourly.temperature_2m[i]}°</p>
+) : (
+  <>
+    <p>{weather.hourly.precipitation[i]} mm</p>
+    <p>{weather.hourly.windspeed_10m[i]} km/h</p>
+  </>
+)}
     </div>
   ))}
 </div>
