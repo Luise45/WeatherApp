@@ -164,13 +164,11 @@ export default function WeatherPage() {
 {viewMode === "marine" ? (
   <>
     <p className="temp">
-      🌊 {marine.hourly.wave_height[0]} m waves
+      {marine.hourly.wave_height[0]} m waves
     </p>
-    <p className="wind">
-      🧭 {marine.hourly.wave_direction[0]}°
-    </p>
+  
     <p className="rain">
-      🌡️ {marine.hourly.sea_surface_temperature[0]}°C water
+       {marine.hourly.sea_surface_temperature[0]}°C water
     </p>
   </>
 ) : (
@@ -198,8 +196,8 @@ export default function WeatherPage() {
 
       {viewMode === "marine" ? (
   <>
-    <p>🌊 {marine.hourly.wave_height[i]} m</p>
-    <p>🌡️ {marine.hourly.sea_surface_temperature[i]}°</p>
+    <p>{marine.hourly.wave_height[i]} m</p>
+    <p> {marine.hourly.sea_surface_temperature[i]}°</p>
   </>
 ) : viewMode === "temperature" ? (
   <p>{weather.hourly.temperature_2m[i]}°</p>
