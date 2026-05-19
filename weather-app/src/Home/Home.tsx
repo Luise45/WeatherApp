@@ -31,28 +31,26 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (!city) {
-      setSuggestions([]);
-      return;
-    }
+  if (!city || city.length < 2) {
+    setSuggestions([]);
+    return;
+  }
 
-    const timer = setTimeout(() => {
-      fetch(
-        `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
-          city
-        )}&limit=5&appid=YOUR_API_KEY`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setSuggestions(data || []);
-        })
-        .catch(() => {
-          setSuggestions([]);
-        });
-    }, 300);
+  const timer = setTimeout(() => {
+    fetch(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
+        city
+      )}&limit=5&appid=YOUR_API_KEY`
+    )
+      .then((res) => res.json())
+      .then((data: CitySuggestion[]) => {
+        setSuggestions(data ?? []);
+      })
+      .catch(() => setSuggestions([]));
+  }, 300);
 
-    return () => clearTimeout(timer);
-  }, [city]);
+  return () => clearTimeout(timer);
+}, [city]);
 
   return (
     <div className="home-container">
@@ -74,7 +72,7 @@ export default function Home() {
         </button>
       </div>
 
-      {suggestions.length > 0 && (
+      {city && suggestions.length > 0 && (
         <ul className="bg-white text-black rounded-xl mt-2 shadow-lg">
           {suggestions.map((s, index) => (
             <li
