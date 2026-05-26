@@ -24,7 +24,7 @@ const weatherBackgrounds = {
 };
 
 
-function getWeatherType(code) {
+function getWeatherType(code: number): string {
   if ([0].includes(code)) return "clear";
   if ([1, 2, 3].includes(code)) return "cloudy";
   if ([45, 48].includes(code)) return "fog";
@@ -34,13 +34,13 @@ function getWeatherType(code) {
 }
 
 export default function WeatherPage() {
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState<any>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const city = searchParams.get("city");
   const [viewMode, setViewMode] = useState("temperature");
 
-  const [marine, setMarine] = useState(null);
+  const [marine, setMarine] = useState<any>(null);
   useEffect(() => {
     if (!city) return;
 
@@ -79,7 +79,7 @@ export default function WeatherPage() {
 
 
   const weatherCode = weather.current_weather.weathercode;
-  const weatherType = getWeatherType(weatherCode);
+  const weatherType = getWeatherType(weatherCode) as keyof typeof weatherBackgrounds;
   
   const backgroundStyle = {
     backgroundImage: `
@@ -156,7 +156,7 @@ export default function WeatherPage() {
         <div className="content-layer">
         <div className="card">
           <div className="icon">
-            {weatherIcons[weather.current_weather.weathercode] || "🌡️"}
+            {weatherIcons[weather.current_weather.weathercode as keyof typeof weatherIcons] || "🌡️"}
           </div>
         
 
@@ -190,7 +190,7 @@ export default function WeatherPage() {
         </div>
 
         <div className="hourly">
-  {weather.hourly.time.slice(0, 24).map((t, i) => (
+  {weather.hourly.time.slice(0, 24).map((t: string, i: number) => (
     <div key={i} className="hour-card">
       <p>{new Date(t).getHours()}:00</p>
 
@@ -216,12 +216,12 @@ export default function WeatherPage() {
           <h2 className="h2">5-Day Forecast</h2>
 
           <div className="daily">
-  {weather.daily.time.slice(0, 5).map((d, i) => (
+  {weather.daily.time.slice(0, 5).map((d: string, i: number) => (
     <div key={i} className="day-card">
       <p>{new Date(d).toLocaleDateString()}</p>
 
       <div className="text-2xl my-2">
-        {weatherIcons[weather.daily.weathercode[i]] || "🌤️"}
+        {weatherIcons[weather.daily.weathercode[i] as keyof typeof weatherIcons] || "🌤️"}
       </div>
 
       {viewMode === "temperature" ? (

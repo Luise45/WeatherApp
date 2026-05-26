@@ -17,9 +17,7 @@ export default function Home() {
   const [city, setCity] = useState("");
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const navigate = useNavigate();
-
-  
-const apiKey = import.meta.env.REACT_APP_API_KEY;
+  const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
   const handleSearch = () => {
     const trimmedCity = city.trim();
