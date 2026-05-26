@@ -4,53 +4,78 @@ import "./Home.css";
 import Recent from "./Recent";
 
 
+
 type CitySuggestion = {
   name: string;
   country: string;
+  state?: string;
   lat: number;
   lon: number;
 };
+
 export default function Home() {
   const [city, setCity] = useState("");
-  
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const navigate = useNavigate();
 
+  
+const apiKey = import.meta.env.REACT_APP_API_KEY;
+
   const handleSearch = () => {
-    if (!city) return;
+    const trimmedCity = city.trim();
+    if (!trimmedCity) return;
 
     let searches = JSON.parse(
       localStorage.getItem("recentCities") ?? "[]"
     ) as string[];
-    searches = searches.filter((c) => c !== city);
-    searches.unshift(city);
+
+    searches = searches.filter((c) => c !== trimmedCity);
+    searches.unshift(trimmedCity);
     searches = searches.slice(0, 5);
+
     localStorage.setItem("recentCities", JSON.stringify(searches));
 
-    navigate(`/weather?city=${city}`);
+    navigate(`/weather?city=${encodeURIComponent(trimmedCity)}`);
   };
 
   useEffect(() => {
-  if (!city || city.length < 2) {
-    setSuggestions([]);
-    return;
-  }
+    const trimmedCity = city.trim();
 
-  const timer = setTimeout(() => {
-    fetch(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
-        city
-      )}&limit=5&appid=YOUR_API_KEY`
-    )
-      .then((res) => res.json())
-      .then((data: CitySuggestion[]) => {
+    if (!trimmedCity || trimmedCity.length < 2 || !apiKey) {
+      setSuggestions([]);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch(
+          `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
+            trimmedCity
+          )}&limit=5&appid=${apiKey}`,
+          { signal: controller.signal }
+        );
+
+        if (!res.ok) {
+          setSuggestions([]);
+          return;
+        }
+
+        const data = (await res.json()) as CitySuggestion[];
         setSuggestions(data ?? []);
-      })
-      .catch(() => setSuggestions([]));
-  }, 300);
+      } catch {
+        if (!controller.signal.aborted) {
+          setSuggestions([]);
+        }
+      }
+    }, 300);
 
-  return () => clearTimeout(timer);
-}, [city]);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [city, apiKey]);
 
   return (
     <div className="home-container">
@@ -62,8 +87,12 @@ export default function Home() {
           placeholder="Enter city..."
           value={city}
           onChange={(e) => setCity(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") handleSearch();
+          }}
           className="p-3 rounded-xl text-black outline-none"
         />
+
         <button
           onClick={handleSearch}
           className="bg-white text-black px-4 rounded-xl hover:bg-gray-200 transition"
@@ -72,20 +101,26 @@ export default function Home() {
         </button>
       </div>
 
-      {city && suggestions.length > 0 && (
+      {suggestions.length > 0 && (
         <ul className="bg-white text-black rounded-xl mt-2 shadow-lg">
-          {suggestions.map((s, index) => (
-            <li
-              key={index}
-              className="p-2 hover:bg-gray-200 cursor-pointer"
-              onClick={() => {
-                setCity(s.name);
-                setSuggestions([]);
-              }}
-            >
-              {s.name}, {s.country}
-            </li>
-          ))}
+          {suggestions.map((s) => {
+            const label = `${s.name}${s.state ? `, ${s.state}` : ""}, ${
+              s.country
+            }`;
+
+            return (
+              <li
+                key={`${s.name}-${s.state ?? ""}-${s.country}-${s.lat}-${s.lon}`}
+                className="p-2 hover:bg-gray-200 cursor-pointer"
+                onClick={() => {
+                  setCity(label);
+                  setSuggestions([]);
+                }}
+              >
+                {label}
+              </li>
+            );
+          })}
         </ul>
       )}
 
@@ -93,4 +128,3 @@ export default function Home() {
     </div>
   );
 }
-
