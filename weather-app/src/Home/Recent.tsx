@@ -1,18 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
+type RecentSearch = string | {
+  label: string;
+  lat?: number;
+  lon?: number;
+};
+
+function getSearchLabel(search: RecentSearch) {
+  return typeof search === "string" ? search : search.label;
+}
+
+function getWeatherUrl(search: RecentSearch) {
+  if (typeof search === "string") {
+    return `/weather?city=${encodeURIComponent(search)}`;
+  }
+
+  const params = new URLSearchParams({ city: search.label });
+
+  if (typeof search.lat === "number" && typeof search.lon === "number") {
+    params.set("lat", String(search.lat));
+    params.set("lon", String(search.lon));
+  }
+
+  return `/weather?${params.toString()}`;
+}
 
 export default function RecentSearches() {
-  const [cities, setCities] = useState<string[]>([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
+  const [cities] = useState<RecentSearch[]>(() => {
     const stored = JSON.parse(
       localStorage.getItem("recentCities") ?? "[]"
-    ) as string[];
-    setCities(stored);
-  }, []);
+    ) as RecentSearch[];
+
+    return stored;
+  });
+  const navigate = useNavigate();
 
   if (cities.length === 0) return null;
 
@@ -24,10 +47,10 @@ export default function RecentSearches() {
         {cities.map((city, index) => (
           <button
             key={index}
-            onClick={() => navigate(`/weather?city=${city}`)}
+            onClick={() => navigate(getWeatherUrl(city))}
             className="chip"
           >
-            {city}
+            {getSearchLabel(city)}
           </button>
         ))}
       </div>

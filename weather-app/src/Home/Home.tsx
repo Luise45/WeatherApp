@@ -13,9 +13,38 @@ type CitySuggestion = {
   lon: number;
 };
 
+type RecentSearch = string | {
+  label: string;
+  lat?: number;
+  lon?: number;
+};
+
+function getSuggestionLabel(suggestion: CitySuggestion) {
+  return `${suggestion.name}${
+    suggestion.state ? `, ${suggestion.state}` : ""
+  }, ${suggestion.country}`;
+}
+
+function getWeatherUrl(search: RecentSearch) {
+  if (typeof search === "string") {
+    return `/weather?city=${encodeURIComponent(search)}`;
+  }
+
+  const params = new URLSearchParams({ city: search.label });
+
+  if (typeof search.lat === "number" && typeof search.lon === "number") {
+    params.set("lat", String(search.lat));
+    params.set("lon", String(search.lon));
+  }
+
+  return `/weather?${params.toString()}`;
+}
+
 export default function Home() {
   const [city, setCity] = useState("");
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
+  const [selectedSuggestion, setSelectedSuggestion] =
+    useState<CitySuggestion | null>(null);
   const navigate = useNavigate();
   const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
@@ -23,26 +52,40 @@ export default function Home() {
     const trimmedCity = city.trim();
     if (!trimmedCity) return;
 
+    const selectedLabel = selectedSuggestion
+      ? getSuggestionLabel(selectedSuggestion)
+      : "";
+    const search: RecentSearch =
+      selectedSuggestion && selectedLabel === trimmedCity
+        ? {
+            label: selectedLabel,
+            lat: selectedSuggestion.lat,
+            lon: selectedSuggestion.lon,
+          }
+        : trimmedCity;
+
     let searches = JSON.parse(
       localStorage.getItem("recentCities") ?? "[]"
-    ) as string[];
+    ) as RecentSearch[];
 
-    searches = searches.filter((c) => c !== trimmedCity);
-    searches.unshift(trimmedCity);
+    searches = searches.filter((savedSearch) => {
+      const savedLabel =
+        typeof savedSearch === "string" ? savedSearch : savedSearch.label;
+
+      return savedLabel !== trimmedCity;
+    });
+    searches.unshift(search);
     searches = searches.slice(0, 5);
 
     localStorage.setItem("recentCities", JSON.stringify(searches));
 
-    navigate(`/weather?city=${encodeURIComponent(trimmedCity)}`);
+    navigate(getWeatherUrl(search));
   };
 
   useEffect(() => {
     const trimmedCity = city.trim();
 
-    if (!trimmedCity || trimmedCity.length < 2 || !apiKey) {
-      setSuggestions([]);
-      return;
-    }
+    if (!trimmedCity || trimmedCity.length < 2 || !apiKey) return;
 
     const controller = new AbortController();
 
@@ -84,7 +127,16 @@ export default function Home() {
           type="text"
           placeholder="Enter city..."
           value={city}
-          onChange={(e) => setCity(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            setCity(value);
+            setSelectedSuggestion(null);
+
+            if (value.trim().length < 2) {
+              setSuggestions([]);
+            }
+          }}
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSearch();
           }}
@@ -102,9 +154,7 @@ export default function Home() {
       {suggestions.length > 0 && (
         <ul className="bg-white text-black rounded-xl mt-2 shadow-lg">
           {suggestions.map((s) => {
-            const label = `${s.name}${s.state ? `, ${s.state}` : ""}, ${
-              s.country
-            }`;
+            const label = getSuggestionLabel(s);
 
             return (
               <li
@@ -112,6 +162,7 @@ export default function Home() {
                 className="p-2 hover:bg-gray-200 cursor-pointer"
                 onClick={() => {
                   setCity(label);
+                  setSelectedSuggestion(s);
                   setSuggestions([]);
                 }}
               >

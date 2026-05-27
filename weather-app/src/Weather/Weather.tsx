@@ -23,6 +23,34 @@ const weatherBackgrounds = {
   fog: "url('https://images.unsplash.com/photo-1487621167305-5d248087c724?w=1920')",
 };
 
+type WeatherData = {
+  current_weather: {
+    weathercode: number;
+    temperature: number;
+    windspeed: number;
+  };
+  hourly: {
+    time: string[];
+    temperature_2m: number[];
+    precipitation: number[];
+    windspeed_10m: number[];
+  };
+  daily: {
+    time: string[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    precipitation_sum: number[];
+    windspeed_10m_max: number[];
+    weathercode: number[];
+  };
+};
+
+type MarineData = {
+  hourly?: {
+    wave_height: number[];
+    sea_surface_temperature: number[];
+  };
+};
 
 function getWeatherType(code: number): string {
   if ([0].includes(code)) return "clear";
@@ -34,40 +62,90 @@ function getWeatherType(code: number): string {
 }
 
 export default function WeatherPage() {
-  const [weather, setWeather] = useState<any>(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const city = searchParams.get("city");
+  const latParam = searchParams.get("lat");
+  const lonParam = searchParams.get("lon");
   const [viewMode, setViewMode] = useState("temperature");
 
-  const [marine, setMarine] = useState<any>(null);
+  const [marine, setMarine] = useState<MarineData | null>(null);
+  const [error, setError] = useState("");
+
   useEffect(() => {
     if (!city) return;
 
-    fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}`)
-      .then((res) => res.json())
-      .then((geo) => {
-        const loc = geo.results?.[0];
-        if (!loc) {
-          alert("City not found");
-          return;
+    const controller = new AbortController();
+    const latitude = latParam ? Number(latParam) : NaN;
+    const longitude = lonParam ? Number(lonParam) : NaN;
+
+    async function loadWeather() {
+      setWeather(null);
+      setMarine(null);
+      setError("");
+
+      try {
+        let location = {
+          latitude,
+          longitude,
+        };
+
+        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+          const geoRes = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
+              city ?? ""
+            )}`,
+            { signal: controller.signal }
+          );
+          const geo = await geoRes.json();
+          const loc = geo.results?.[0];
+
+          if (!loc) {
+            setError("City not found");
+            return;
+          }
+
+          location = {
+            latitude: loc.latitude,
+            longitude: loc.longitude,
+          };
         }
- 
-  fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=temperature_2m,precipitation,windspeed_10m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,weathercode&current_weather=true&timezone=auto`
-  )
-    .then((res) => res.json())
-    .then(setWeather);
 
+        const weatherRes = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&hourly=temperature_2m,precipitation,windspeed_10m,weathercode&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max,weathercode&current_weather=true&timezone=auto`,
+          { signal: controller.signal }
+        );
+        const weatherData = await weatherRes.json();
+        setWeather(weatherData);
 
-  fetch(
-    `https://marine-api.open-meteo.com/v1/marine?latitude=${loc.latitude}&longitude=${loc.longitude}&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature`
-  )
-    .then((res) => res.json())
-    .then(setMarine);
-});
-  
-    }, [city]);
+        const marineRes = await fetch(
+          `https://marine-api.open-meteo.com/v1/marine?latitude=${location.latitude}&longitude=${location.longitude}&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature`,
+          { signal: controller.signal }
+        );
+        const marineData = await marineRes.json();
+        setMarine(marineData);
+      } catch {
+        if (!controller.signal.aborted) {
+          setError("Weather data could not be loaded");
+        }
+      }
+    }
+
+    loadWeather();
+
+    return () => {
+      controller.abort();
+    };
+  }, [city, latParam, lonParam]);
+
+  if (error) {
+    return (
+      <div className="h-screen flex items-center justify-center text-xl">
+        {error}
+      </div>
+    );
+  }
 
   if (!weather) {
     return (
@@ -161,7 +239,7 @@ export default function WeatherPage() {
         
 
 
-{viewMode === "marine" ? (
+{viewMode === "marine" && marine?.hourly ? (
   <>
     <p className="temp">
       {marine.hourly.wave_height[0]} m waves
@@ -172,17 +250,21 @@ export default function WeatherPage() {
     </p>
   </>
 ) : (
-  <>
-    <p className="temp">
-      {weather.current_weather.temperature}°C
-    </p>
-    <p className="wind">
-      {weather.current_weather.windspeed} km/h wind
-    </p>
-    <p className="rain">
-      {weather.hourly.precipitation[0]} mm rain
-    </p>
-  </>
+  viewMode === "marine" ? (
+    <p className="rain">Marine data is not available here.</p>
+  ) : (
+    <>
+      <p className="temp">
+        {weather.current_weather.temperature}°C
+      </p>
+      <p className="wind">
+        {weather.current_weather.windspeed} km/h wind
+      </p>
+      <p className="rain">
+        {weather.hourly.precipitation[0]} mm rain
+      </p>
+    </>
+  )
 )}
 
 
@@ -194,11 +276,13 @@ export default function WeatherPage() {
     <div key={i} className="hour-card">
       <p>{new Date(t).getHours()}:00</p>
 
-      {viewMode === "marine" ? (
+      {viewMode === "marine" && marine?.hourly ? (
   <>
     <p>{marine.hourly.wave_height[i]} m</p>
     <p> {marine.hourly.sea_surface_temperature[i]}°</p>
   </>
+) : viewMode === "marine" ? (
+  <p>N/A</p>
 ) : viewMode === "temperature" ? (
   <p>{weather.hourly.temperature_2m[i]}°</p>
 ) : (
