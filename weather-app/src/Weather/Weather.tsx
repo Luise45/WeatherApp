@@ -343,8 +343,7 @@ export default function WeatherPage() {
         }}>
 
           <p style={{ margin: 0, fontSize: "0.875rem" }}>
-            © {new Date().getFullYear()} Weather App | Data from Open-Meteo
-          </p>
+            © {new Date().getFullYear()} Weather App | Data from Open-Meteo and OpenWeatherMap | Developed by Luise   </p>
 
         </footer>
         </div>
