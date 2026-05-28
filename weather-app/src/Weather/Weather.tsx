@@ -221,6 +221,7 @@ export default function WeatherPage({ search }: WeatherPageProps) {
           <div className="icon">
             {weatherIcons[weather.current_weather.weathercode as keyof typeof weatherIcons] || "🌡️"}
           </div>
+        </div>
         
 
 
@@ -306,10 +307,33 @@ export default function WeatherPage({ search }: WeatherPageProps) {
       )}
     </div>
   ))}
+
+
+ </div>
 </div>
 
+   
+   <div className="weather-footer">
+   <div className="weather-footer p">
+        <footer style={{
+          position: "relative",
+          zIndex: 1,
+  
+  
+          padding: "0.7rem",
+          textAlign: "center",
+          marginTop: "auto"
+        }}>
+
+          <p style={{ margin: 0, fontSize: "0.875rem" }}>
+            © {new Date().getFullYear()} Weather App | Data from Open-Meteo and OpenWeatherMap | Developed by Luise   </p>
+
+        </footer>
         </div>
-      </div>
+        </div>
+  
+    
     </section>
-      );
+    );
+
 }
