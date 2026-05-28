@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Weather.css";
 
 const weatherIcons = {
@@ -52,6 +51,12 @@ type MarineData = {
   };
 };
 
+export type WeatherSearch = string | {
+  label: string;
+  lat?: number;
+  lon?: number;
+};
+
 function getWeatherType(code: number): string {
   if ([0].includes(code)) return "clear";
   if ([1, 2, 3].includes(code)) return "cloudy";
@@ -61,13 +66,28 @@ function getWeatherType(code: number): string {
   return "clear";
 }
 
-export default function WeatherPage() {
+function getSearchLabel(search: WeatherSearch) {
+  return typeof search === "string" ? search : search.label;
+}
+
+function getSearchCoordinates(search: WeatherSearch) {
+  if (typeof search === "string") {
+    return { latitude: NaN, longitude: NaN };
+  }
+
+  return {
+    latitude: typeof search.lat === "number" ? search.lat : NaN,
+    longitude: typeof search.lon === "number" ? search.lon : NaN,
+  };
+}
+
+type WeatherPageProps = {
+  search: WeatherSearch;
+};
+
+export default function WeatherPage({ search }: WeatherPageProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const city = searchParams.get("city");
-  const latParam = searchParams.get("lat");
-  const lonParam = searchParams.get("lon");
+  const city = getSearchLabel(search);
   const [viewMode, setViewMode] = useState("temperature");
 
   const [marine, setMarine] = useState<MarineData | null>(null);
@@ -77,8 +97,7 @@ export default function WeatherPage() {
     if (!city) return;
 
     const controller = new AbortController();
-    const latitude = latParam ? Number(latParam) : NaN;
-    const longitude = lonParam ? Number(lonParam) : NaN;
+    const { latitude, longitude } = getSearchCoordinates(search);
 
     async function loadWeather() {
       setWeather(null);
@@ -94,7 +113,7 @@ export default function WeatherPage() {
         if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
           const geoRes = await fetch(
             `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(
-              city ?? ""
+              city
             )}`,
             { signal: controller.signal }
           );
@@ -137,11 +156,11 @@ export default function WeatherPage() {
     return () => {
       controller.abort();
     };
-  }, [city, latParam, lonParam]);
+  }, [city, search]);
 
   if (error) {
     return (
-      <div className="h-screen flex items-center justify-center text-xl">
+      <div className="weather-status">
         {error}
       </div>
     );
@@ -149,7 +168,7 @@ export default function WeatherPage() {
 
   if (!weather) {
     return (
-      <div className="h-screen flex items-center justify-center text-xl">
+      <div className="weather-status">
         Loading...
       </div>
     );
@@ -171,67 +190,33 @@ export default function WeatherPage() {
 
 
   return (
- 
-    <div className="page" style={backgroundStyle}>
-   <div className="background-layer" style={backgroundStyle}>
-  
-  
-   <div className="weather-header">
- <div className="city-name">
-    <header style={{
-      position: "relative",
-      zIndex: 1,
-
-      backdropFilter: "blur(10px)",
-      padding: "0.6rem 2rem",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      flexWrap: "wrap",
-      gap: "1rem"
-    }}>
-      <div className="max-w-5xl mx-auto p-4">
-        <button
-          onClick={() => navigate("/")}
-          className="back-btn"
-        >
-          ← Back
-        </button>
-        </div>
-        
-    </header>
-    </div>
-    </div>
-   
- 
-        <div className="content-layer">
-        <div className="weather-main">
+    <section className="weather-panel" style={backgroundStyle}>
+      <div className="weather-main">
         <div className="toggle">
-  <button
-    className={viewMode === "temperature" ? "active" : ""}
-    onClick={() => setViewMode("temperature")}
-  >
-    Temperature
-  </button>
+          <button
+            className={viewMode === "temperature" ? "active" : ""}
+            onClick={() => setViewMode("temperature")}
+          >
+            Temperature
+          </button>
 
-  <button
-    className={viewMode === "rainwind" ? "active" : ""}
-    onClick={() => setViewMode("rainwind")}
-  >
-    Rain & Wind
-  </button>
+          <button
+            className={viewMode === "rainwind" ? "active" : ""}
+            onClick={() => setViewMode("rainwind")}
+          >
+            Rain & Wind
+          </button>
 
-  <button
-  className={viewMode === "marine" ? "active" : ""}
-  onClick={() => setViewMode("marine")}
->
-  Marine 
-</button>
-</div>
+          <button
+            className={viewMode === "marine" ? "active" : ""}
+            onClick={() => setViewMode("marine")}
+          >
+            Marine
+          </button>
+        </div>
 
 
         <h1 className="h1">Weather in {city}</h1>
-        <div className="content-layer">
         <div className="card">
           <div className="icon">
             {weatherIcons[weather.current_weather.weathercode as keyof typeof weatherIcons] || "🌡️"}
@@ -325,31 +310,6 @@ export default function WeatherPage() {
 
         </div>
       </div>
-    </div>
-    </div>
-    </div>
-
-   <div className="weather-footer">
-   <div className="weather-footer p">
-        <footer style={{
-          position: "relative",
-          zIndex: 1,
-  
-  
-          padding: "0.7rem",
-          textAlign: "center",
-          marginTop: "auto"
-        }}>
-
-          <p style={{ margin: 0, fontSize: "0.875rem" }}>
-            © {new Date().getFullYear()} Weather App | Data from Open-Meteo and OpenWeatherMap | Developed by Luise   </p>
-
-        </footer>
-        </div>
-        </div>
-      </div>
-
-
-
-  );
+    </section>
+      );
 }
