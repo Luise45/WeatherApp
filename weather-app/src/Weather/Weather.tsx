@@ -207,12 +207,7 @@ export default function WeatherPage({ search }: WeatherPageProps) {
             Rain & Wind
           </button>
 
-          <button
-            className={viewMode === "marine" ? "active" : ""}
-            onClick={() => setViewMode("marine")}
-          >
-            Marine
-          </button>
+         
         </div>
 
 
@@ -225,20 +220,6 @@ export default function WeatherPage({ search }: WeatherPageProps) {
         
 
 
-{viewMode === "marine" && marine?.hourly ? (
-  <>
-    <p className="temp">
-      {marine.hourly.wave_height[0]} m waves
-    </p>
-  
-    <p className="rain">
-       {marine.hourly.sea_surface_temperature[0]}°C water
-    </p>
-  </>
-) : (
-  viewMode === "marine" ? (
-    <p className="rain">Marine data is not available here.</p>
-  ) : (
     <>
       <p className="temp">
         {weather.current_weather.temperature}°C
@@ -250,8 +231,7 @@ export default function WeatherPage({ search }: WeatherPageProps) {
         {weather.hourly.precipitation[0]} mm rain
       </p>
     </>
-  )
-)}
+  
 
 
           
@@ -264,8 +244,8 @@ export default function WeatherPage({ search }: WeatherPageProps) {
 
       {viewMode === "marine" && marine?.hourly ? (
   <>
-    <p>{marine.hourly.wave_height[i]} m</p>
-    <p> {marine.hourly.sea_surface_temperature[i]}°</p>
+   
+  
   </>
 ) : viewMode === "marine" ? (
   <p>N/A</p>
