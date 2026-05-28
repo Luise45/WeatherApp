@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Home.css";
-import Recent from "./Recent";
+import Recent, { type RecentSearch } from "./Recent";
+import WeatherPage from "../Weather/Weather";
 
 
 
@@ -13,31 +13,14 @@ type CitySuggestion = {
   lon: number;
 };
 
-type RecentSearch = string | {
-  label: string;
-  lat?: number;
-  lon?: number;
-};
-
 function getSuggestionLabel(suggestion: CitySuggestion) {
   return `${suggestion.name}${
     suggestion.state ? `, ${suggestion.state}` : ""
   }, ${suggestion.country}`;
 }
 
-function getWeatherUrl(search: RecentSearch) {
-  if (typeof search === "string") {
-    return `/weather?city=${encodeURIComponent(search)}`;
-  }
-
-  const params = new URLSearchParams({ city: search.label });
-
-  if (typeof search.lat === "number" && typeof search.lon === "number") {
-    params.set("lat", String(search.lat));
-    params.set("lon", String(search.lon));
-  }
-
-  return `/weather?${params.toString()}`;
+function getSearchLabel(search: RecentSearch) {
+  return typeof search === "string" ? search : search.label;
 }
 
 export default function Home() {
@@ -45,8 +28,24 @@ export default function Home() {
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const [selectedSuggestion, setSelectedSuggestion] =
     useState<CitySuggestion | null>(null);
-  const navigate = useNavigate();
+  const [selectedSearch, setSelectedSearch] = useState<RecentSearch | null>(null);
+  const [recentSearches, setRecentSearches] = useState<RecentSearch[]>(() => {
+    return JSON.parse(localStorage.getItem("recentCities") ?? "[]") as RecentSearch[];
+  });
+
   const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+  const saveSearch = (search: RecentSearch) => {
+    const searchLabel = getSearchLabel(search);
+    const searches = recentSearches
+      .filter((savedSearch) => getSearchLabel(savedSearch) !== searchLabel)
+      .slice(0, 4);
+
+    const nextSearches = [search, ...searches];
+
+    setRecentSearches(nextSearches);
+    localStorage.setItem("recentCities", JSON.stringify(nextSearches));
+  };
 
   const handleSearch = () => {
     const trimmedCity = city.trim();
@@ -64,22 +63,9 @@ export default function Home() {
           }
         : trimmedCity;
 
-    let searches = JSON.parse(
-      localStorage.getItem("recentCities") ?? "[]"
-    ) as RecentSearch[];
-
-    searches = searches.filter((savedSearch) => {
-      const savedLabel =
-        typeof savedSearch === "string" ? savedSearch : savedSearch.label;
-
-      return savedLabel !== trimmedCity;
-    });
-    searches.unshift(search);
-    searches = searches.slice(0, 5);
-
-    localStorage.setItem("recentCities", JSON.stringify(searches));
-
-    navigate(getWeatherUrl(search));
+    setSelectedSearch(search);
+    saveSearch(search);
+    setSuggestions([]);
   };
 
   useEffect(() => {
@@ -119,61 +105,74 @@ export default function Home() {
   }, [city, apiKey]);
 
   return (
-    <div className="home-container">
-      <h1>Weather Forecast</h1>
+    <main className="dashboard-page">
+      <section className="home-container">
+        <h1>Weather Forecast</h1>
 
-      <div className="flex gap-2">
-        <input
-          type="text"
-          placeholder="Enter city..."
-          value={city}
-          onChange={(e) => {
-            const value = e.target.value;
+        <div className="search-row">
+          <input
+            type="text"
+            placeholder="Enter city..."
+            value={city}
+            onChange={(e) => {
+              const value = e.target.value;
 
-            setCity(value);
-            setSelectedSuggestion(null);
+              setCity(value);
+              setSelectedSuggestion(null);
 
-            if (value.trim().length < 2) {
-              setSuggestions([]);
-            }
+              if (value.trim().length < 2) {
+                setSuggestions([]);
+              }
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
+          />
+
+          <button onClick={handleSearch}>
+            Search
+          </button>
+        </div>
+
+        {suggestions.length > 0 && (
+          <ul className="suggestion-list">
+            {suggestions.map((s) => {
+              const label = getSuggestionLabel(s);
+
+              return (
+                <li
+                  key={`${s.name}-${s.state ?? ""}-${s.country}-${s.lat}-${s.lon}`}
+                  onClick={() => {
+                    setCity(label);
+                    setSelectedSuggestion(s);
+                    setSuggestions([]);
+                  }}
+                >
+                  {label}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        <Recent
+          cities={recentSearches}
+          onSelect={(search) => {
+            setCity(getSearchLabel(search));
+            setSelectedSearch(search);
+            saveSearch(search);
           }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") handleSearch();
-          }}
-          className="p-3 rounded-xl text-black outline-none"
         />
+      </section>
 
-        <button
-          onClick={handleSearch}
-          className="bg-white text-black px-4 rounded-xl hover:bg-gray-200 transition"
-        >
-          Search
-        </button>
-      </div>
-
-      {suggestions.length > 0 && (
-        <ul className="bg-white text-black rounded-xl mt-2 shadow-lg">
-          {suggestions.map((s) => {
-            const label = getSuggestionLabel(s);
-
-            return (
-              <li
-                key={`${s.name}-${s.state ?? ""}-${s.country}-${s.lat}-${s.lon}`}
-                className="p-2 hover:bg-gray-200 cursor-pointer"
-                onClick={() => {
-                  setCity(label);
-                  setSelectedSuggestion(s);
-                  setSuggestions([]);
-                }}
-              >
-                {label}
-              </li>
-            );
-          })}
-        </ul>
+      {selectedSearch ? (
+        <WeatherPage search={selectedSearch} />
+      ) : (
+        <section className="empty-dashboard">
+          <h2>Search for a city to see the dashboard.</h2>
+         
+        </section>
       )}
-
-      <Recent />
-    </div>
+    </main>
   );
 }
