@@ -189,6 +189,12 @@ export default function WeatherPage({ search }: WeatherPageProps) {
   };
 
 
+
+
+  
+/*
+SECTION start
+*/
   return (
     <section className="weather-panel" style={backgroundStyle}>
       <div className="weather-main">
@@ -212,14 +218,14 @@ export default function WeatherPage({ search }: WeatherPageProps) {
 
 
         <h1 className="h1">Weather in {city}</h1>
+
+
         <div className="card">
           <div className="icon">
             {weatherIcons[weather.current_weather.weathercode as keyof typeof weatherIcons] || "🌡️"}
           </div>
-        </div>
+       
         
-
-
     <>
       <p className="temp">
         {weather.current_weather.temperature}°C
@@ -232,7 +238,7 @@ export default function WeatherPage({ search }: WeatherPageProps) {
       </p>
     </>
   
-
+ </div>
 
           
         </div>
@@ -293,14 +299,14 @@ export default function WeatherPage({ search }: WeatherPageProps) {
 </div>
 
    
-   <div className="weather-footer">
-   <div className="weather-footer p">
+  <div className="weather-footer">
+      <div className="weather-footer p">
         <footer style={{
           position: "relative",
           zIndex: 1,
   
   
-          padding: "0.7rem",
+          padding: "0.3rem",
           textAlign: "center",
           marginTop: "auto"
         }}>
@@ -310,10 +316,15 @@ export default function WeatherPage({ search }: WeatherPageProps) {
 
         </footer>
         </div>
-        </div>
+        </div>    
   
     
     </section>
+
+
+
+
     );
+    
 
 }
