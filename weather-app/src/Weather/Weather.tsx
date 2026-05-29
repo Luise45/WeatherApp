@@ -242,7 +242,7 @@ SECTION start
 
           
         </div>
-
+ <h2 className="h2">Hourly Forecast</h2>
         <div className="hourly">
   {weather.hourly.time.slice(0, 24).map((t: string, i: number) => (
     <div key={i} className="hour-card">
@@ -312,7 +312,7 @@ SECTION start
         }}>
 
           <p style={{ margin: 0, fontSize: "0.875rem" }}>
-            © {new Date().getFullYear()} Weather App | Data from Open-Meteo and OpenWeatherMap | Developed by Luise   </p>
+            © {new Date().getFullYear()} Weather App | Data from Open-Meteo and OpenWeatherMap    </p>
 
         </footer>
         </div>
