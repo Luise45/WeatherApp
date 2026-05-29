@@ -29,19 +29,19 @@ body {
   max-width: 700px;
   margin: 0 auto 28px;
   text-align: center;
-  background: rgba(104, 129, 178, 0.75);
-  backdrop-filter: blur(16px);
+  background: rgba(104, 129, 178, 0.18);
+  backdrop-filter: blur(18px);
   padding: 32px;
-  border-radius: 24px;
+  border-radius: 28px;
   color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease;
-  opacity: 0.95;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .home-container:hover {
   transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 
@@ -108,45 +108,53 @@ body {
 .suggestion-list {
   list-style: none;
   margin: 12px 0 0;
-  padding: 8px;
+  padding: 10px;
   font-weight: 400;
-  background: rgba(255, 255, 255, 0.95);
-  color: #1a1a2e;
-  border-radius: 16px;
+  background: rgba(104, 129, 178, 0.18);
+  color: #ffffff;
+  border-radius: 18px;
   text-align: left;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.18);
 }
 
 .suggestion-list li {
-  padding: 10px 12px;
-  border-radius: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
   cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .suggestion-list li:hover {
-  background: rgba(104, 129, 178, 0.18);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
 }
 
 .recent-container {
   margin-top: 28px;
   text-align: left;
-  padding-top: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .recent-container button {
   margin: 0;
   padding: 10px 15px;
   border-radius: 60px;
-  border: none;
-  background: rgba(106, 141, 223, 0.4);
-  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(104, 129, 178, 0.18);
+  backdrop-filter: blur(12px);
   color: white;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
+}
 
+.recent-container button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.32);
 }
 .recent-title {
   font-size: 1rem;
@@ -168,23 +176,23 @@ body {
 
 
 .chip {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 8px 18px;
+  background: rgba(104, 129, 178, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 10px 18px;
   border-radius: 40px;
   cursor: pointer;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
   transition: all 0.2s ease;
   color: white;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   width: auto;
 }
 
 .chip:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.12);
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.32);
 }
 
 .chip:active {
@@ -210,12 +218,12 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 32px;
-  border-radius: 24px;
+  border-radius: 28px;
   text-align: center;
-  background: rgba(20, 30, 54, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.24);
-  backdrop-filter: blur(14px);
+  background: rgba(104, 129, 178, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(18px);
 }
 
 .empty-dashboard h2 {
