@@ -39,7 +39,7 @@ export default function Home() {
     const searchLabel = getSearchLabel(search);
     const searches = recentSearches
       .filter((savedSearch) => getSearchLabel(savedSearch) !== searchLabel)
-      .slice(0, 4);
+      .slice(0, 1);
 
     const nextSearches = [search, ...searches];
 
@@ -109,60 +109,64 @@ export default function Home() {
       <section className="home-container">
         <h1>Weather Forecast</h1>
 
-        <div className="search-row">
-          <input
-            type="text"
-            placeholder="Enter city..."
-            value={city}
-            onChange={(e) => {
-              const value = e.target.value;
+        <div className="search-layout">
+          <div className="search-panel">
+            <div className="search-row">
+              <input
+                type="text"
+                placeholder="Enter city..."
+                value={city}
+                onChange={(e) => {
+                  const value = e.target.value;
 
-              setCity(value);
-              setSelectedSuggestion(null);
+                  setCity(value);
+                  setSelectedSuggestion(null);
 
-              if (value.trim().length < 2) {
-                setSuggestions([]);
-              }
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSearch();
+                  if (value.trim().length < 2) {
+                    setSuggestions([]);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearch();
+                }}
+              />
+
+              <button onClick={handleSearch}>
+                Search
+              </button>
+            </div>
+
+            {suggestions.length > 0 && (
+              <ul className="suggestion-list">
+                {suggestions.map((s) => {
+                  const label = getSuggestionLabel(s);
+
+                  return (
+                    <li
+                      key={`${s.name}-${s.state ?? ""}-${s.country}-${s.lat}-${s.lon}`}
+                      onClick={() => {
+                        setCity(label);
+                        setSelectedSuggestion(s);
+                        setSuggestions([]);
+                      }}
+                    >
+                      {label}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+
+          <Recent
+            cities={recentSearches}
+            onSelect={(search) => {
+              setCity(getSearchLabel(search));
+              setSelectedSearch(search);
+              saveSearch(search);
             }}
           />
-
-          <button onClick={handleSearch}>
-            Search
-          </button>
         </div>
-
-        {suggestions.length > 0 && (
-          <ul className="suggestion-list">
-            {suggestions.map((s) => {
-              const label = getSuggestionLabel(s);
-
-              return (
-                <li
-                  key={`${s.name}-${s.state ?? ""}-${s.country}-${s.lat}-${s.lon}`}
-                  onClick={() => {
-                    setCity(label);
-                    setSelectedSuggestion(s);
-                    setSuggestions([]);
-                  }}
-                >
-                  {label}
-                </li>
-              );
-            })}
-          </ul>
-        )}
-
-        <Recent
-          cities={recentSearches}
-          onSelect={(search) => {
-            setCity(getSearchLabel(search));
-            setSelectedSearch(search);
-            saveSearch(search);
-          }}
-        />
       </section>
 
       {selectedSearch ? (

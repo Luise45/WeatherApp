@@ -50,7 +50,6 @@ body {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 12px;
   align-items: center;
-  margin-top: 18px;
 }
 
 .home-container input {
@@ -117,7 +116,7 @@ body {
 }
 
 .suggestion-list li {
-  padding: 12px 14px;
+  padding: 14px 14px;
   border-radius: 14px;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
@@ -156,7 +155,8 @@ body {
 }
 .recent-title {
   font-size: 1rem;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  
   opacity: 0.8;
   color: rgba(255, 255, 255, 0.85);
   font-weight: 500;
