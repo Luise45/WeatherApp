@@ -39,7 +39,7 @@ export default function Home() {
     const searchLabel = getSearchLabel(search);
     const searches = recentSearches
       .filter((savedSearch) => getSearchLabel(savedSearch) !== searchLabel)
-      .slice(0, 1);
+      .slice(0, 3);
 
     const nextSearches = [search, ...searches];
 
@@ -107,7 +107,7 @@ export default function Home() {
   return (
     <main className="dashboard-page">
       <section className="home-container">
-        <h1>Weather Forecast</h1>
+      
 
         <div className="search-layout">
           <div className="search-panel">
