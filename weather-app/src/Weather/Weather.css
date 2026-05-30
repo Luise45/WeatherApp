@@ -88,7 +88,7 @@ The main weather panel for hourly and daily weather information
 .weather-panel {
   position: relative;
  
-  max-width: 1200px;
+  max-width: 1300px;
   width: min(1200px, 100%);
   margin: 0 auto;
   overflow: hidden;
@@ -111,8 +111,32 @@ The main weather panel for hourly and daily weather information
 }
 
 
+.weather-panel2 {
+  position: relative;
+ 
+  max-width: 1300px;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.32);
+  
+}
 
-.content-layer {
+.weather-panel::after2 {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+.content-layer2 {
   position: relative;
   z-index: 1;
   max-width: 1200px;
@@ -121,10 +145,15 @@ The main weather panel for hourly and daily weather information
   width: 100%;
 }
 
+
+
+/*
+Panle with the big temperature
+*/
 .weather-main {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -138,7 +167,7 @@ The main weather panel for hourly and daily weather information
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 1.5rem;
   margin-bottom: 24px;
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -158,7 +187,7 @@ The card for the current weather
   border-radius: 28px;
   padding: 32px 24px;
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 21px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -168,7 +197,7 @@ The card for the current weather
   background-color: rgba(104, 129, 178, 0.82);
 
   text-align: center;
-  margin-top: 12px;
+  margin-top: 10px;
   scroll-snap-align: start;
   border-radius: 20px;
   background: rgba(104, 129, 178, 0.18);
