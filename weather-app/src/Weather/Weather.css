@@ -97,6 +97,7 @@ The main weather panel for hourly and daily weather information
   background-size: cover;
   background-position: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.32);
+  margin-left: 5px;
 }
 
 .weather-panel::after {
@@ -113,9 +114,10 @@ The main weather panel for hourly and daily weather information
 
 .weather-panel2 {
   position: relative;
- 
-  max-width: 1300px;
-  width: min(1200px, 100%);
+  grid-column: 1 / -1;
+  min-height: calc(100svh - 180px);
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
   overflow: hidden;
   border-radius: 24px;
@@ -123,10 +125,10 @@ The main weather panel for hourly and daily weather information
   background-size: cover;
   background-position: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.32);
-  
+  padding: 2rem 0;
 }
 
-.weather-panel::after2 {
+.weather-panel2::after {
   content: '';
   position: absolute;
   top: 0;
@@ -135,6 +137,11 @@ The main weather panel for hourly and daily weather information
   bottom: 0;
   background-color: rgba(255, 255, 255, 0.08);
   pointer-events: none;
+}
+
+.weather-panel2 > * {
+  position: relative;
+  z-index: 1;
 }
 .content-layer2 {
   position: relative;
@@ -223,9 +230,14 @@ The card for the current weather
 }
 
 .wind {
-  font-size: 18px;
+  font-size: 20px;
   color: rgba(255, 255, 255, 0.9);
   margin-top: 8px;
+}
+.rain {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 6px;
 }
 
 .section {
@@ -249,7 +261,7 @@ Start hour card related sytles
 
 
 .hourly {
-  scroll-snap-type: x mandatory;
+  
   display: flex;
   gap: 18px;
   overflow-x: auto;
@@ -259,7 +271,7 @@ Start hour card related sytles
 }
 
 .hourly::-webkit-scrollbar {
-  height: 8px;
+  height: 9px;
 }
 
 .hourly::-webkit-scrollbar-track {
@@ -274,7 +286,7 @@ Start hour card related sytles
 
 .hour-card {
   scroll-snap-align: start;
-  min-width: 110px;
+  min-width: 120px;
   padding: 18px 16px;
   border-radius: 24px;
   background: rgba(104, 129, 178, 0.18);
@@ -295,9 +307,11 @@ Start hour card related sytles
 .hour-card p {
   margin: 0;
 }
-
+/*
+The first p element in the hour card, which is the time label
+*/
 .hour-card p:first-child {
-  font-size: 0.78rem;
+  font-size: 1 rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -307,11 +321,13 @@ Start hour card related sytles
 
 .hour-card p:nth-child(2) {
   font-size: 1.3rem;
+  
   font-weight: 700;
 }
 
+
 .hour-card p:nth-child(3) {
-  font-size: 0.87rem;
+  font-size: 1.1rem;
   color: rgba(247, 251, 255, 0.82);
   margin-top: 8px;
 }
