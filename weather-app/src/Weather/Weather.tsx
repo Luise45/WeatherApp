@@ -138,12 +138,7 @@ export default function WeatherPage({ search }: WeatherPageProps) {
         const weatherData = await weatherRes.json();
         setWeather(weatherData);
 
-        const marineRes = await fetch(
-          `https://marine-api.open-meteo.com/v1/marine?latitude=${location.latitude}&longitude=${location.longitude}&hourly=wave_height,wave_direction,wave_period,sea_surface_temperature`,
-          { signal: controller.signal }
-        );
-        const marineData = await marineRes.json();
-        setMarine(marineData);
+       
       } catch {
         if (!controller.signal.aborted) {
           setError("Weather data could not be loaded");
@@ -196,7 +191,7 @@ export default function WeatherPage({ search }: WeatherPageProps) {
 SECTION start
 */
   return (
-    <section className="weather-panel" style={backgroundStyle}>
+    <><section className="weather-panel" style={backgroundStyle}>
       <div className="weather-main">
         <div className="toggle">
           <button
@@ -213,7 +208,7 @@ SECTION start
             Rain & Wind
           </button>
 
-         
+
         </div>
 
 
@@ -224,102 +219,104 @@ SECTION start
           <div className="icon">
             {weatherIcons[weather.current_weather.weathercode as keyof typeof weatherIcons] || "🌡️"}
           </div>
-       
-        
-    <>
-      <p className="temp">
-        {weather.current_weather.temperature}°C
-      </p>
-      <p className="wind">
-        {weather.current_weather.windspeed} km/h wind
-      </p>
-      <p className="rain">
-        {weather.hourly.precipitation[0]} mm rain
-      </p>
-    </>
-  
- </div>
 
-          
+
+          <>
+            <p className="temp">
+              {weather.current_weather.temperature}°C
+            </p>
+            <p className="wind">
+              {weather.current_weather.windspeed} km/h wind
+            </p>
+            <p className="rain">
+              {weather.hourly.precipitation[0]} mm rain
+            </p>
+          </>
+
         </div>
- <h2 className="h2">Hourly Forecast</h2>
-        <div className="hourly">
-  {weather.hourly.time.slice(0, 24).map((t: string, i: number) => (
-    <div key={i} className="hour-card">
-      <p>{new Date(t).getHours()}:00</p>
 
-      {viewMode === "marine" && marine?.hourly ? (
-  <>
-   
-  
-  </>
-) : viewMode === "marine" ? (
-  <p>N/A</p>
-) : viewMode === "temperature" ? (
-  <p>{weather.hourly.temperature_2m[i]}°</p>
-) : (
-  <>
-    <p>{weather.hourly.precipitation[i]} mm</p>
-    <p>{weather.hourly.windspeed_10m[i]} km/h</p>
-  </>
-)}
-    </div>
-  ))}
-</div>
+
+      </div>
+
+    </section><section className="weather-panel2" style={backgroundStyle}>
+        <h2 className="h2">Hourly Forecast</h2>
+        <div className="hourly">
+          {weather.hourly.time.slice(0, 24).map((t: string, i: number) => (
+            <div key={i} className="hour-card">
+              <p>{new Date(t).getHours()}:00</p>
+
+              {viewMode === "marine" && marine?.hourly ? (
+                <>
+
+
+                </>
+              ) : viewMode === "marine" ? (
+                <p>N/A</p>
+              ) : viewMode === "temperature" ? (
+                <p>{weather.hourly.temperature_2m[i]}°</p>
+              ) : (
+                <>
+                  <p>{weather.hourly.precipitation[i]} mm</p>
+                  <p>{weather.hourly.windspeed_10m[i]} km/h</p>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
 
         <div className="section"></div>
         <div>
           <h2 className="h2">5-Day Forecast</h2>
 
           <div className="daily">
-  {weather.daily.time.slice(0, 5).map((d: string, i: number) => (
-    <div key={i} className="day-card">
-      <p>{new Date(d).toLocaleDateString()}</p>
+            {weather.daily.time.slice(0, 5).map((d: string, i: number) => (
+              <div key={i} className="day-card">
+                <p>{new Date(d).toLocaleDateString()}</p>
 
-      <div className="text-2xl my-2">
-        {weatherIcons[weather.daily.weathercode[i] as keyof typeof weatherIcons] || "🌤️"}
-      </div>
+                <div className="text-2xl my-2">
+                  {weatherIcons[weather.daily.weathercode[i] as keyof typeof weatherIcons] || "🌤️"}
+                </div>
 
-      {viewMode === "temperature" ? (
-        <p>
-          {weather.daily.temperature_2m_max[i]}° /{" "}
-          {weather.daily.temperature_2m_min[i]}°
-        </p>
-      ) : (
-        <>
-          <p>{weather.daily.precipitation_sum[i]} mm</p>
-          <p>{weather.daily.windspeed_10m_max[i]} km/h</p>
-        </>
-      )}
-    </div>
-  ))}
+                {viewMode === "temperature" ? (
+                  <p>
+                    {weather.daily.temperature_2m_max[i]}° /{" "}
+                    {weather.daily.temperature_2m_min[i]}°
+                  </p>
+                ) : (
+                  <>
+                    <p>{weather.daily.precipitation_sum[i]} mm</p>
+                    <p>{weather.daily.windspeed_10m_max[i]} km/h</p>
+                  </>
+                )}
+              </div>
+            ))}
 
 
- </div>
-</div>
-
-   
-  <div className="weather-footer">
-      <div className="weather-footer p">
-        <footer style={{
-          position: "relative",
-          zIndex: 1,
-  
-  
-          padding: "0.3rem",
-          textAlign: "center",
-          marginTop: "auto"
-        }}>
-
-          <p style={{ margin: 0, fontSize: "0.875rem" }}>
-            © {new Date().getFullYear()} Weather App | Data from Open-Meteo and OpenWeatherMap    </p>
-
-        </footer>
+          </div>
         </div>
-        </div>    
-  
-    
-    </section>
+
+
+        <div className="weather-footer">
+          <div className="weather-footer p">
+            <footer style={{
+              position: "relative",
+              zIndex: 1,
+
+
+              padding: "0.3rem",
+              textAlign: "center",
+              marginTop: "auto"
+            }}>
+
+              <p style={{ margin: 0, fontSize: "0.875rem" }}>
+                © {new Date().getFullYear()} Weather App | Data from Open-Meteo and OpenWeatherMap    </p>
+
+            </footer>
+          </div>
+        </div>
+
+
+      </section></>
 
 
 
