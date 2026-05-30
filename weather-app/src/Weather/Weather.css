@@ -308,7 +308,7 @@ Start hour card related sytles
   margin: 0;
 }
 /*
-The first p element in the hour card, which is the time label
+The  time label on the hour card
 */
 .hour-card p:first-child {
   font-size: 1 rem;
@@ -318,14 +318,19 @@ The first p element in the hour card, which is the time label
   opacity: 0.78;
   margin-bottom: 10px;
 }
+/*
+The temperature on the hour card
+*/
 
 .hour-card p:nth-child(2) {
   font-size: 1.3rem;
-  
+
   font-weight: 700;
 }
 
-
+/*
+The wind on the hour card
+*/
 .hour-card p:nth-child(3) {
   font-size: 1.1rem;
   color: rgba(247, 251, 255, 0.82);
@@ -371,9 +376,11 @@ The first p element in the hour card, which is the time label
 .day-card p {
   margin: 0;
 }
-
+/*
+Day card date
+*/
 .day-card p:first-child {
-  font-size: 0.92rem;
+  font-size: 1.2rem;
   opacity: 0.78;
   margin-bottom: 14px;
   font-weight: 600;
@@ -383,9 +390,11 @@ The first p element in the hour card, which is the time label
   font-size: 2.1rem;
   margin-bottom: 14px;
 }
-
+/*
+Day card data
+*/
 .day-card p:not(:first-child) {
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
 }
 
