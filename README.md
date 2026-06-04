@@ -1,4 +1,8 @@
 #  Weather App
+
+![Databse Diagram ](https://img.shields.io/badge/React-grey)
+![Databse Diagram ](https://img.shields.io/badge/OpenAPIs-blue)
+
 Live Demo: https://weather-app.luise-tabatt.workers.dev
 
 This is a weather forecasting application built with React and TypeScript. It integrates multiple weather APIs to provide weather forecasts based on location.
