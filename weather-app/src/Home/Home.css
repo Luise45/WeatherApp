@@ -21,14 +21,20 @@ body {
 .dashboard-page {
   width: 100%;
   min-height: 100svh;
-  padding: 48px 20px;
+  padding: clamp(16px, 5vw, 48px);
   color: #ffffff;
   display: grid;
-  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   align-items: start;
-  gap: 28px;
+  gap: clamp(16px, 4vw, 28px);
   max-width: 1500px;
   margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .dashboard-page {
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  }
 }
 
 .home-container {
@@ -37,7 +43,7 @@ body {
   text-align: center;
   background: rgba(104, 129, 178, 0.18);
   backdrop-filter: blur(18px);
-  padding: 32px;
+  padding: clamp(20px, 5vw, 32px);
   border-radius: 28px;
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -54,18 +60,18 @@ body {
 .search-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: 12px;
+  gap: clamp(8px, 2vw, 12px);
   align-items: center;
 }
 
 .home-container input {
   width: 100%;
-  padding: 14px 18px;
+  padding: clamp(10px, 2.5vw, 14px) clamp(12px, 3vw, 18px);
   border-radius: 60px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   color: #1a1a2e;
   outline: none;
   transition: all 0.2s ease;
@@ -239,6 +245,82 @@ body {
 
 .empty-dashboard p {
   color: rgba(255, 255, 255, 0.82);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .home-container {
+    padding: clamp(16px, 5vw, 24px);
+  }
+  
+  .home-container h1 {
+    font-size: clamp(1.6rem, 6vw, 2.2rem);
+    margin-bottom: 6px;
+  }
+  
+  .home-container p {
+    font-size: clamp(0.8rem, 3vw, 0.95rem);
+    margin-bottom: 16px;
+  }
+  
+  .search-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .home-container button {
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .home-container input {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+  
+  .suggestion-list {
+    margin: 10px 0 0;
+    padding: 8px;
+    border-radius: 14px;
+  }
+  
+  .suggestion-list li {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .recent-container {
+    margin-top: 20px;
+    padding-top: 14px;
+  }
+  
+  .recent-title {
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+  }
+  
+  .chip-container {
+    gap: 8px;
+  }
+  
+  .chip {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    border-radius: 32px;
+  }
+  
+  .recent-container button {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+  
+  .empty-dashboard {
+    min-height: 240px;
+    padding: 24px 20px;
+  }
 }
 
 
