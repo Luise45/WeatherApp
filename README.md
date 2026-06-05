@@ -7,7 +7,7 @@ Live Demo: https://weather-app.luise-tabatt.workers.dev
 
 This is a weather forecasting application built with React and TypeScript. It integrates multiple weather APIs to provide weather forecasts based on location.
 
-Using **Open-Meteo** and **OpenWeatherMap**, users can search for precise locations in multiple languages and view detailed weather information, including temperature, wind and precipitation forecasts.
+Using **Open-Meteo** and **OpenWeatherMap**, users can search for precise locations in multiple languages. It is possible to view detailed weather information, including temperature, wind and precipitation forecasts.
 
 ---
 ##  Application Preview
@@ -37,11 +37,11 @@ Using **Open-Meteo** and **OpenWeatherMap**, users can search for precise locati
 ## Architecture
 
 - Frontend: React + TypeScript
-- Weather Data: Open-Meteo API
+- Weather Data: Open-Meteo API and Open Weather Map
 - Location Search: OpenWeatherMap Geocoding API
 - Styling: CSS
 - Design: Figma
-- Deployment: Vercel
+- Deployment: Cloudflare
 
 ---
 
